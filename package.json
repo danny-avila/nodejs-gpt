@@ -1,6 +1,6 @@
 {
-  "name": "@danny-avila/node-gpt-api",
-  "version": "1.37.3",
+  "name": "nodejs-gpt",
+  "version": "1.37.4",
   "description": "A ChatGPT implementation using the official ChatGPT model via OpenAI's API.",
   "main": "index.js",
   "bin": {
