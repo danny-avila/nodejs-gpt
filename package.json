@@ -14,6 +14,8 @@
     "cli": "node bin/cli.js",
     "dev:debug:server": "nodemon --ignore cache.json --inspect=0.0.0.0:9229 bin/server.js",
     "dev:debug:cli": "nodemon --ignore cache.json --inspect=0.0.0.0:9228 bin/cli.js",
+    "update": "node config/update.js",
+    "reinstall": "node config/update.js -g",
     "rebuild:package-lock": "node config/packages"
   },
   "author": "danny-avila",

@@ -1,13 +1,10 @@
 import { execSync } from 'child_process';
-import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
-import { deleteNodeModules } from './helpers.js';
+import { deleteNodeModules, getRootDir } from './helpers.js';
 
 // Set the directories
-const filename = fileURLToPath(import.meta.url);
-const dirname = path.dirname(filename);
-const rootDir = path.resolve(dirname, '..');
+const rootDir = getRootDir();
 const directories = [rootDir];
 
 // Delete package-lock if it exists
