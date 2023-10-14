@@ -1,5 +1,5 @@
 {
-  "name": "@waylaidwanderer/chatgpt-api",
+  "name": "@danny-avila/node-gpt-api",
   "version": "1.37.3",
   "description": "A ChatGPT implementation using the official ChatGPT model via OpenAI's API.",
   "main": "index.js",
@@ -13,14 +13,17 @@
     "server": "node bin/server.js",
     "cli": "node bin/cli.js",
     "dev:debug:server": "nodemon --ignore cache.json --inspect=0.0.0.0:9229 bin/server.js",
-    "dev:debug:cli": "nodemon --ignore cache.json --inspect=0.0.0.0:9228 bin/cli.js"
+    "dev:debug:cli": "nodemon --ignore cache.json --inspect=0.0.0.0:9228 bin/cli.js",
+    "update": "node config/update.js",
+    "reinstall": "node config/update.js -g",
+    "rebuild:package-lock": "node config/packages"
   },
-  "author": "waylaidwanderer",
+  "author": "danny-avila",
   "license": "MIT",
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/waylaidwanderer/node-chatgpt-api.git"
+    "url": "git+https://github.com/danny-avila/node-gpt-api.git"
   },
   "keywords": [
     "api",

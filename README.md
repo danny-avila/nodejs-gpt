@@ -4,6 +4,12 @@
 
 ## Updates
 <details open>
+<summary><strong>2023-10-14</strong></summary>
+This repo has been forked from [waylaidwanderer/node-chatgpt-api](https://github.com/waylaidwanderer/node-chatgpt-api) for active maintenance.
+
+</details>
+
+<details>
 <summary><strong>2023-03-01</strong></summary>
 
 **Support for the official ChatGPT model has been added!** You can now use the `gpt-3.5-turbo` model with the official OpenAI API, using `ChatGPTClient`. This is the same model that ChatGPT uses, and it's the most powerful model available right now. Usage of this model is **not free**, however it is **10x cheaper** (priced at $0.002 per 1k tokens) than `text-davinci-003`.
