@@ -1,5 +1,5 @@
 {
-  "name": "@danny-avila/node-gpt-api",
+  "name": "@librechat/node-gpt-api",
   "version": "1.37.4",
   "description": "A ChatGPT implementation using the official ChatGPT model via OpenAI's API.",
   "main": "index.js",
