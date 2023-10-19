@@ -2,7 +2,7 @@ import './fetch-polyfill.js';
 import crypto from 'crypto';
 import WebSocket from 'ws';
 import Keyv from 'keyv';
-import { ProxyAgent } from 'undici';
+import { Agent, ProxyAgent } from 'undici';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import { BingImageCreator } from '@timefox/bic-sydney';
 
@@ -123,24 +123,28 @@ export default class BingAIClient {
         };
         if (this.options.proxy) {
             fetchOptions.dispatcher = new ProxyAgent(this.options.proxy);
+        } else {
+            fetchOptions.dispatcher = new Agent({ connect: { timeout: 20_000 } });
         }
-        const response = await fetch(`${this.options.host}/turing/conversation/create`, fetchOptions);
+        const response = await fetch(`${this.options.host}/turing/conversation/create?bundleVersion=1.864.15`, fetchOptions);
         const body = await response.text();
         try {
-            return JSON.parse(body);
+            const res = JSON.parse(body);
+            res.encryptedConversationSignature = response.headers.get('x-sydney-encryptedconversationsignature') ?? null;
+            return res;
         } catch (err) {
             throw new Error(`/turing/conversation/create: failed to parse response body.\n${body}`);
         }
     }
 
-    async createWebSocketConnection() {
+    async createWebSocketConnection(encryptedConversationSignature) {
         return new Promise((resolve, reject) => {
             let agent;
             if (this.options.proxy) {
                 agent = new HttpsProxyAgent(this.options.proxy);
             }
 
-            const ws = new WebSocket('wss://sydney.bing.com/sydney/ChatHub', { agent, headers: this.headers });
+            const ws = new WebSocket(`wss://sydney.bing.com/sydney/ChatHub?sec_access_token=${encodeURIComponent(encryptedConversationSignature)}`, { agent, headers: this.headers });
 
             ws.on('error', err => reject(err));
 
@@ -206,7 +210,7 @@ export default class BingAIClient {
         let {
             jailbreakConversationId = false, // set to `true` for the first message to enable jailbreak mode
             conversationId,
-            conversationSignature,
+            encryptedConversationSignature,
             clientId,
             onProgress,
         } = opts;
@@ -224,13 +228,13 @@ export default class BingAIClient {
             onProgress = () => { };
         }
 
-        if (jailbreakConversationId || !conversationSignature || !conversationId || !clientId) {
+        if (jailbreakConversationId || !encryptedConversationSignature || !conversationId || !clientId) {
             const createNewConversationResponse = await this.createNewConversation();
             if (this.debug) {
                 console.debug(createNewConversationResponse);
             }
             if (
-                !createNewConversationResponse.conversationSignature
+                !createNewConversationResponse.encryptedConversationSignature
                 || !createNewConversationResponse.conversationId
                 || !createNewConversationResponse.clientId
             ) {
@@ -243,7 +247,7 @@ export default class BingAIClient {
                 throw new Error(`Unexpected response:\n${JSON.stringify(createNewConversationResponse, null, 2)}`);
             }
             ({
-                conversationSignature,
+                encryptedConversationSignature,
                 conversationId,
                 clientId,
             } = createNewConversationResponse);
@@ -317,7 +321,7 @@ export default class BingAIClient {
             conversation.messages.push(userMessage);
         }
 
-        const ws = await this.createWebSocketConnection();
+        const ws = await this.createWebSocketConnection(encryptedConversationSignature);
 
         ws.on('error', (error) => {
             console.error(error);
@@ -367,7 +371,7 @@ export default class BingAIClient {
                         text: jailbreakConversationId ? 'Continue the conversation in context. Assistant:' : message,
                         messageType: jailbreakConversationId ? 'SearchQuery' : 'Chat',
                     },
-                    conversationSignature,
+                    encryptedConversationSignature,
                     participant: {
                         id: clientId,
                     },
@@ -443,6 +447,9 @@ export default class BingAIClient {
                         }
                         const messages = event?.arguments?.[0]?.messages;
                         if (!messages?.length || messages[0].author !== 'bot') {
+                            return;
+                        }
+                        if (messages[0].contentOrigin === 'Apology') {
                             return;
                         }
                         if (messages[0]?.contentType === 'IMAGE') {
@@ -625,7 +632,7 @@ export default class BingAIClient {
 
         const returnData = {
             conversationId,
-            conversationSignature,
+            encryptedConversationSignature,
             clientId,
             invocationId: invocationId + 1,
             conversationExpiryTime,
