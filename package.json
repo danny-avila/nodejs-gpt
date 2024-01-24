@@ -43,30 +43,30 @@
     "bing-chat"
   ],
   "dependencies": {
-    "@dqbd/tiktoken": "^1.0.2",
-    "@fastify/cors": "^8.2.0",
-    "@timefox/bic-sydney": "^1.1.2",
+    "@dqbd/tiktoken": "^1.0.7",
+    "@fastify/cors": "^8.5.0",
+    "@timefox/bic-sydney": "^1.1.4",
     "@waylaidwanderer/fastify-sse-v2": "^3.1.0",
     "@waylaidwanderer/fetch-event-source": "^3.0.1",
-    "boxen": "^7.0.1",
-    "clipboardy": "^3.0.0",
-    "dotenv": "^16.0.3",
-    "fastify": "^4.11.0",
-    "fetch-undici": "^3.0.1",
-    "https-proxy-agent": "^7.0.0",
-    "inquirer": "^9.1.4",
-    "inquirer-autocomplete-prompt": "^3.0.0",
-    "keyv": "^4.5.2",
-    "keyv-file": "^0.2.0",
-    "ora": "^7.0.1",
-    "undici": "^5.20.0",
-    "ws": "^8.12.0"
+    "boxen": "^7.1.1",
+    "clipboardy": "^4.0.0",
+    "dotenv": "^16.4.0",
+    "fastify": "^4.25.2",
+    "fetch-undici": "^4.0.0",
+    "https-proxy-agent": "^7.0.2",
+    "inquirer": "^9.2.12",
+    "inquirer-autocomplete-prompt": "^3.0.1",
+    "keyv": "^4.5.4",
+    "keyv-file": "^0.3.0",
+    "ora": "^8.0.1",
+    "undici": "^6.4.0",
+    "ws": "^8.16.0"
   },
   "devDependencies": {
-    "@keyv/redis": "^2.5.6",
-    "eslint": "^8.35.0",
+    "@keyv/redis": "^2.8.3",
+    "eslint": "^8.56.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.27.5",
-    "nodemon": "^3.0.1"
+    "eslint-plugin-import": "^2.29.1",
+    "nodemon": "^3.0.3"
   }
 }
